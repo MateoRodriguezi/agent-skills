@@ -17,3 +17,7 @@ Strict PRD auditing framework that enforces:
 Install a specific skill:
 
 npx skills add github.com/<your-username>/agent-skills --skill prd-enforcer
+
+
+## License
+MIT
