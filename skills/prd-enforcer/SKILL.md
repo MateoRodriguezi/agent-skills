@@ -16,10 +16,20 @@ Use this skill when the user:
 - Wants a PRD template that enforces measurable outcomes.
 
 ## Non-negotiables
+
 - If a metric matters, it must be measurable.
 - Every metric claim must specify a **time window** and (when possible) a **sample size (n=...)**.
 - Every outcome metric must include **baseline + target**.
 - If baseline/target is unknown, state it explicitly and add a measurement plan with an owner and date.
+
+## Anti-Hallucination Safeguards
+
+- Never fabricate numeric baselines, targets, timelines, sample sizes, data sources, or owners.
+- If a required number is not explicitly provided in the user input, use placeholders such as [BASELINE TBD], [TARGET TBD], [DATE TBD].
+- Do not assume tools (e.g., Amplitude, internal DB) unless explicitly mentioned.
+- Do not invent rollout phases, owners, or timelines.
+- Any inferred assumption must be clearly labeled as "Assumption" and separated from factual statements.
+- Prefer adding a Required Question instead of guessing.
 
 ## Required PRD Sections (must be present)
 1) Context (quantified problem)
@@ -54,6 +64,8 @@ For each metric mentioned or implied, verify:
 - Time window (e.g., last 7d)
 - Data source (Amplitude, DB, logs, etc.)
 - Owner (who will measure/monitor)
+- If a metric is mentioned without numbers, flag it instead of completing it.
+Never infer realistic-looking numbers.
 
 Rules:
 - Missing baseline or missing target for the main objective → **Critical**
@@ -92,11 +104,15 @@ Monitoring must include:
 Missing rollout OR missing monitoring → **Critical**
 
 ### Step 6 — Produce Rewrite Draft
+
 Write a clean PRD that:
-- Preserves the user’s intent
-- Makes assumptions explicit
-- Adds placeholders like [BASELINE TBD] only when truly unknown
-- Adds a “Data needed” section if required
+
+- Preserves the user’s original intent.
+- Does not fabricate numbers, dates, or owners.
+- Uses placeholders like [BASELINE TBD] only when strictly necessary.
+- Clearly labels any inference as "Assumption".
+- Adds a "Data Needed" section listing missing information.
+- Does not introduce new metrics unless they logically derive from the stated objective.
 
 ## Severity Rules
 - **Critical**: Blocks execution/decision (missing required sections, baseline/target for objective, rollout or monitoring)
