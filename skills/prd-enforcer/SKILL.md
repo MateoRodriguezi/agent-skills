@@ -35,10 +35,11 @@ Use this skill when the user:
 1) Context (quantified problem)
 2) Objective (measurable, includes baseline)
 3) Scope (in scope / out of scope)
-4) Success Metrics (definition + baseline + target + time window)
-5) Risks & mitigations
-6) Rollout plan (phases, gating, owners, rollback)
-7) Post-launch monitoring (dashboards/alerts/cadence + owners)
+4) Technical Landscape (how it runs: deployment, infra, services, tech stack, data flow — required for New Feature and Infrastructure/Platform types; optional for Growth/Conversion)
+5) Success Metrics (definition + baseline + target + time window)
+6) Risks & mitigations
+7) Rollout plan (phases, gating, owners, rollback)
+8) Post-launch monitoring (dashboards/alerts/cadence + owners)
 
 ## Workflow (run in order)
 
@@ -50,11 +51,23 @@ Pick one:
 - Compliance/Regulatory
 - Operations/Monitoring
 
-Use the type to set expectations (e.g., Growth PRDs require funnel metrics; Infra PRDs require SLOs/SLAs and monitoring).
+Use the type to set expectations:
+- Growth/Conversion → require funnel metrics
+- New Feature → require Technical Landscape section (deployment, infra, tech stack)
+- Infrastructure/Platform → require SLOs/SLAs, monitoring, and Technical Landscape section
+- Compliance/Regulatory → require regulatory references and audit trail considerations
+- Operations/Monitoring → require SLOs/SLAs and alerting thresholds
 
 ### Step 1 — Coverage Check
 Confirm each required section exists.
 If a section is missing → add a **Critical** finding and specify exactly what’s missing.
+
+For PRDs classified as **New Feature** or **Infrastructure/Platform**, verify that **Technical Landscape** is present and covers at minimum: deployment model, key services/infrastructure, and technology stack. Without this, effort estimation, dependency analysis, and risk assessment lack grounding.
+- Missing Technical Landscape for Infrastructure/Platform → **Critical**
+- Missing Technical Landscape for New Feature → **Important**
+- Missing or very thin Technical Landscape for other types when the feature involves technical changes → **Minor**
+
+Additionally, if the feature handles sensitive data (PII, financial, credentials) or exposes new APIs/endpoints, verify that **Risks & Mitigations** includes at least one risk related to data exposure, unauthorized access, or fraud. If missing → **Important** finding.
 
 ### Step 2 — Metrics Integrity Check
 For each metric mentioned or implied, verify:
@@ -66,6 +79,8 @@ For each metric mentioned or implied, verify:
 - Owner (who will measure/monitor)
 - If a metric is mentioned without numbers, flag it instead of completing it.
 Never infer realistic-looking numbers.
+
+When the feature involves financial transactions, user authentication, or sensitive data access, check for **guardrail metrics** that detect misuse — e.g., fraud rate, auth failure rate, unusual access patterns. If absent → **Important** finding. These are not security metrics — they are operational guardrails that protect business outcomes.
 
 Rules:
 - Missing baseline or missing target for the main objective → **Critical**
@@ -86,6 +101,8 @@ The PRD must enable a decision:
 - Expected impact (business value or risk reduction)
 - Rough effort (S/M/L acceptable) and dependencies (teams, vendors)
 - Tradeoffs / what you’re deprioritizing
+- What sensitive data does this feature handle? (PII, financial data, credentials — if any)
+- What is the worst-case misuse scenario? (If someone used this feature with bad intent, what could happen?)
 
 If a reader cannot say “yes, ship it” after reading → **Important**
 
@@ -95,11 +112,14 @@ Rollout must include:
 - Gating criteria (what allows moving phases)
 - Owners (role or team is fine)
 - Rollback plan for critical issues
+- For features handling sensitive data or payments: gating should include confirmation that access controls have been reviewed and abuse scenarios considered before moving to GA
+
 Monitoring must include:
 - Dashboards or queries
 - Alerts / thresholds
 - Review cadence (e.g., daily for first week)
 - Owner on call / responder path (at least role/team)
+- For features with financial or identity impact: alerts for anomalous patterns (e.g., unusual transaction spikes, access from unexpected geos, auth failure bursts)
 
 Missing rollout OR missing monitoring → **Critical**
 
@@ -159,6 +179,11 @@ Write a clean PRD that:
 ## Scope
 ### In scope
 ### Out of scope
+## Technical Landscape
+### Deployment model
+### Key services & infrastructure
+### External integrations
+### Data flow summary
 ## Success Metrics
 ## Dependencies & Constraints
 ## Risks & Mitigations
